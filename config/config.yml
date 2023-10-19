@@ -1,0 +1,71 @@
+mqtt:
+  host: mqtt
+
+objects:
+  track:
+    # - person
+    - car
+    - motorcycle
+    - plate
+
+cameras:
+  test:
+    ffmpeg:
+      inputs:
+        - path: /media/frigate/camera-test.mp4
+          input_args: -re -stream_loop -1 -fflags +genpts
+          roles:
+            - detect
+            - rtmp
+    detect:
+      height: 1080
+      width: 1920
+      fps: 5
+  camera1:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+        - path: rtsp://admin:0938447416hd@222.253.40.180:1024/Streaming/Unicast/channels/3101
+          roles:
+            - detect
+            - rtmp
+  camera2:
+    ffmpeg:
+      hwaccel_args: preset-nvidia-h264
+      inputs:
+        - path: rtsp://admin:0938447416hd@222.253.40.180:1024/Streaming/Unicast/channels/101
+          roles:
+            - detect
+            - rtmp
+  # camera1: # <------ Name the camera
+  #   ffmpeg:
+  #     hwaccel_args: preset-nvidia-h264
+  #     inputs:
+  #       - path: rtsp://admin:HQ-0907979696@anphukp5c.vncctv.com:1024/Streaming/Unicast/channels/101
+  #         roles:
+  #           - detect
+  #           - rtmp
+  # camera2:
+  #   ffmpeg:
+  #     hwaccel_args: preset-nvidia-h264
+  #     inputs:
+  #       - path: rtsp://admin:HQ-0907979696@anphukp5c.vncctv.com:1024/Streaming/Unicast/channels/201
+  #         roles:
+  #           - detect
+  #           - rtmp
+  #   detect:
+  #     height: 1080
+  #     width: 1920
+  #     fps: 5
+
+detectors:
+  tensorrt:
+    type: tensorrt
+    device: 0 #This is the default, select the first GPU
+
+model:
+  path: /trt-models/yolov7-tiny-416.trt
+  input_tensor: nchw
+  input_pixel_format: rgb
+  width: 416
+  height: 416

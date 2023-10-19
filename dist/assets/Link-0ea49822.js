@@ -1,1 +1,0 @@
-import{o as i,J as u}from"./index-1b1f5707.js";function c({activeClassName:e="",className:r="text-blue-500 hover:underline",children:n,href:o,...t}){return i(u,{activeClassName:e,className:r,href:o,...t,children:n})}export{c as L};
